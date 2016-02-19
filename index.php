@@ -18,7 +18,7 @@
     <link rel="icon" href="../../favicon.ico">
     <title>Espace Libellule</title>
     <!-- Google Map API (paramètres : sensor->geolocalisation, langage->langue, region->le pays) -->
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places"></script>
     <!-- Bootstrap core CSS -->
     <link href="../projetLibellule/css/bootstrap.min.css" rel="stylesheet">
     <link href="../projetLibellule/css/style.css" rel="stylesheet">
@@ -26,7 +26,7 @@
     <link href="jumbotron-narrow.css" rel="stylesheet">
   </head>
 
-  <body>
+  <body onload="init()">
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">

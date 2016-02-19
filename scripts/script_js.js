@@ -1,3 +1,12 @@
+function init()
+{
+  var autoComplete = new google.maps.places.Autocomplete(
+  document.getElementById("address"), {
+    types: ['(cities)'],
+    componentRestrictions: {country: 'fr'}
+  });
+}
+
 function controlForm() {
 
   var listeSpe = jQuery("#listeSpe");
@@ -61,7 +70,8 @@ function error(err) {
 function displayError(elemtoappend, msg) {
   var error = "<p id='errorMsg' style='color: #e74c3c'>"+msg+"</p>";
   if(jQuery("#errorMsg").length){
-    jQuery("#errorMsg").html(msg);
+    jQuery("#errorMsg").remove();
+    jQuery("#"+elemtoappend).append(error);
   } else {
     jQuery("#"+elemtoappend).append(error);
   }
