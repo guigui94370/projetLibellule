@@ -3,17 +3,10 @@
   require 'functions.php';
 
   if(isset($_POST["submit"])) {
-    $req = 'SELECT personne.id, 
-              personne.nom, 
-              personne.prenom, 
-              personne.codePostal,
-              personne.ville,
-              personne.adresse,
-              personne.locX,
-              personne.locY,
-              specialite.libelle
-            FROM personne, specialite
-            WHERE personne.idSpe = specialite.id AND (specialite.libelle LIKE "%'.$_POST["ville"].'%")';
+    $req = 'SELECT *
+            FROM personne
+            INNER JOIN specialite ON personne.idSpe = specialite.id;
+            ';
     $res = $bdd->query($req);
   }
 ?>
@@ -35,10 +28,11 @@
     <title>Espace Libellule</title>
 
     <!-- Google Map API (paramètres : sensor->geolocalisation, langage->langue, region->le pays) -->
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
 
     <!-- Bootstrap core CSS -->
     <link href="../projetLibellule/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../projetLibellule/css/style.css" rel="stylesheet">
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../bootstrap-3.3.6/docs/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -58,8 +52,6 @@
   </head>
 
   <body onload="initialize()">
-
-    <div class="container">
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
@@ -70,64 +62,63 @@
         </nav>
         <h3 class="text-muted">Espace Libellule</h3>
       </div>
-      
-      <div class="jumbotron">
-        <div id="map_canvas"></div>
-        <h3>Rechercher un spécialiste</h3>
-        <form action="#" method="POST">
-			<input id="spe" type="text" name="spe">
-      <p></p>
-			<p><input type="submit" class="btn btn-lg btn-success" name="submit"></p>
-        </form>
-      </div>
 
-      <div class="row marketing">
-        
+      <div class='col-md-6'>
           <?php
           if (isset($_POST["submit"])) {
             foreach($res as $key) {
               echo '
-              <div class="col-lg-6">
-                <h4>'.$key["prenom"].'&nbsp;'.$key["nom"].'</h4>
-                <span class="label label-default">'.$key["libelle"].'</span>
-                <p>'.$key["adresse"].' '.$key["codePostal"].' '.$key["ville"].'</p>
+              <div class="col-md-6">
+                  <a data-toggle="modal" data-target="#myModal" >'.$key["prenom"].'&nbsp;'.$key["nom"].'</a>
+                  <span class="label label-default">'.$key["libelle"].'</span>
+                  <p>'.$key["adresse"].' '.$key["codePostal"].' '.$key["ville"].'</p>
               </div>';
             }
           }
           ?>
-           
-
-        <!-- <div class="col-lg-6">
-          <h4>Justin Bieber</h4>
-          <span class="label label-default">Kinésithérapeute</span>
-          <p>5 avenue de la République 75011 Paris</p>
-
-          <h4>Mathieu Kasovitz</h4>
-          <span class="label label-default">Chirurgien Plasticien</span>
-          <p>5 avenue de la République 75011 Paris</p>
-
-          <h4>René Lataupe</h4>
-          <span class="label label-default ">Soffrologue</span>
-          <p>5 avenue de la République 75011 Paris</p>
-        </div> -->
-        <nav>
-		  <ul class="pagination">
-		    <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-		    <li class="active"><a href="#">1<span class="sr-only">(current)</span></a></li>
-		    <li class="disabled"><a href="#">2<span class="sr-only">(current)</span></a></li>
-		    <li class="disabled"><a href="#">3<span class="sr-only">(current)</span></a></li>
-		    <li class="disabled"><a href="#" aria-label="Forward"><span aria-hidden="true">&raquo;</span></a></li>
-		  </ul>
-		</nav>
+      </div>
+      <div class='col-md-6'>
+        <div class="jumbotron">
+          <div id="map_canvas"></div>
+          <h3>Rechercher un spécialiste</h3>
+          <form action="#" method="POST">
+          <select name="spe">
+            <?php
+            $results=$bdd->query("SELECT * FROM specialite");
+            $results->setFetchMode(PDO::FETCH_OBJ);
+            while( $result = $results->fetch() )
+            {
+                echo "<option value='".$result->id."' >".$result->libelle."</option>";
+            }
+            $results->closeCursor();
+            ?>
+          </select>
+        <input id="adresse" placeholder="Adresse" type="text" name="adresse">
+        <button>Me Trouver</button>
+        <p></p>
+  			<p><input type="submit" class="btn btn-lg btn-success" name="submit"></p>
+          </form>
+        </div>
       </div>
 
-      <footer class="footer">
-        <p>&copy; 2015 GWesley</p>
-      </footer>
+      <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <?php echo $key["prenom"].'&nbsp;'.$key["nom"]; ?>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+    </div>
+  </div>
+</div>
 
-    </div> <!-- /container -->
 
     <script src="../projetLibellule/scripts/script_js.js"></script>
+    <script src="../projetLibellule/js/jquery-2.2.0.min.js"></script>
+    <script src="../projetLibellule/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../bootstrap-3.3.6/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
