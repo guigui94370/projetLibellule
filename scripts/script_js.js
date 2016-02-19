@@ -1,44 +1,35 @@
-var previousPosition = null;
-
-      function initialize() {
-        map = new google.maps.Map(document.getElementById("map_canvas"), {
-              zoom: 19,
-              center: new google.maps.LatLng(48.858565, 2.347198),
-              mapTypeId: google.maps.MapTypeId.ROADMAP
-            });
-      }
-
-      if (navigator.geolocation)
-        var watchId = navigator.geolocation.watchPosition(successCallback,
-                                  null,
-                                  {enableHighAccuracy:true});
-      else
-        alert("Votre navigateur ne prend pas en compte la géolocalisation HTML5");
-
-      function successCallback(position){
-        map.panTo(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
-          map: map
-        });
-        if (previousPosition){
-          var newLineCoordinates =
-          [
-            new google.maps.LatLng(previousPosition.coords.latitude, previousPosition.coords.longitude),
-            new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
-          ];
-
-          var newLine = new google.maps.Polyline({
-            path: newLineCoordinates,
-            strokeColor: "#FF0000",
-            strokeOpacity: 1.0,
-            strokeWeight: 2
-          });
-          newLine.setMap(map);
-        }
-        previousPosition = position;
-      }
-
+https://www.googleapis.com/geolocation/v1/geolocate?key=AIzaSyA4cyJ5SqXWluPoS2To_pAZTW96Ol-KTmo
       function disable() {
           jQuery("#optionTitle").attr("disabled", "disabled");
       }
+
+      function localisation() {
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+        navigator.geolocation.getCurrentPosition(success, error, options);
+      }
+
+      function success(pos) {
+        var crd = pos.coords;
+
+        /*console.log('Your current position is:');
+        console.log('Latitude : ' + crd.latitude);
+        console.log('Longitude: ' + crd.longitude);
+        console.log('More or less ' + crd.accuracy + ' meters.');*/
+
+        jQuery.ajax({
+          method: 'POST',
+          url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+crd.latitude+","+crd.longitude+"&key=AIzaSyA4cyJ5SqXWluPoS2To_pAZTW96Ol-KTmo",
+        }).done(function(result) {
+          console.log(result);
+          jQuery("#address").val(result.results[0].address_components[2].long_name);
+        });
+
+      };
+
+      function error(err) {
+        console.warn('ERROR(' + err.code + '): ' + err.message);
+      };

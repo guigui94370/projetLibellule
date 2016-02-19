@@ -26,7 +26,7 @@
     <link href="jumbotron-narrow.css" rel="stylesheet">
   </head>
 
-  <body onload="initialize()">
+  <body>
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
@@ -40,10 +40,12 @@
 
   <?php if(isset($_POST["submit"]))
         {
-            $req = 'SELECT *
+            $req = "SELECT *
                     FROM personne
-                    INNER JOIN specialite ON personne.idSpe = specialite.id;
-                    ';
+                    INNER JOIN specialite ON personne.idSpe = specialite.id
+                    WHERE ville LIKE '".$_POST['address']."'
+                    AND specialite.id = '".$_POST['spe']."'
+                    ";
             $res = $bdd->query($req);
     ?>
     <div class='col-md-6'>
@@ -83,7 +85,7 @@
         <h3 id='menuTitle'>Rechercher un spécialiste</h3>
         <form class="form-inline" method="POST" action="">
           <div class="form-group">
-            <select onclick='disable()' class='form-control' placeholder="Spécialité">
+            <select name="spe" onclick='disable()' class='form-control' placeholder="Spécialité">
               <option id="optionTitle">Choisir une Spécialité</option>
               <?php
                 $results=$bdd->query("SELECT * FROM specialite");
@@ -97,9 +99,14 @@
             </select>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" id="adresse" placeholder="Adresse">
+            <input type="text" class="form-control" id="address" name="address" placeholder="Adresse">
           </div>
-          <button type="submit" name="submit" class="btn btn-default">Search</button>
+          <div class="form-group">
+            <button onclick='localisation()' type="button" class="btn btn-default" >
+              &nbsp;<span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>&nbsp;
+            </button>
+            <button type="submit" name="submit" class="btn btn-default">Search</button>
+          </div>
         </form>
     </div>
     <?php } ?>
