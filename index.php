@@ -18,7 +18,7 @@
     <link rel="icon" href="../../favicon.ico">
     <title>Espace Libellule</title>
     <!-- Google Map API (paramètres : sensor->geolocalisation, langage->langue, region->le pays) -->
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
     <!-- Bootstrap core CSS -->
     <link href="../projetLibellule/css/bootstrap.min.css" rel="stylesheet">
     <link href="../projetLibellule/css/style.css" rel="stylesheet">
@@ -38,7 +38,7 @@
         <h3 class="text-muted">Espace Libellule</h3>
       </div>
 
-  <?php if(isset($_POST["submit"]))
+  <?php if(isset($_POST["submit"]) && !empty($_POST["spe"]))
         {
             $req = "SELECT *
                     FROM personne
@@ -83,10 +83,10 @@
     <?php } else { ?>
     <div id='searchNav' class='col-lg-12'>
         <h3 id='menuTitle'>Rechercher un spécialiste</h3>
-        <form class="form-inline" method="POST" action="">
+        <form class="form-inline" method="POST" action="" onSubmit="return controlForm()">
           <div class="form-group">
-            <select name="spe" onclick='disable()' class='form-control' placeholder="Spécialité">
-              <option id="optionTitle">Choisir une Spécialité</option>
+            <select id="listeSpe" name="spe" onclick='disable()' class='form-control'>
+              <option value="" id="optionTitle">Choisir une Spécialité</option>
               <?php
                 $results=$bdd->query("SELECT * FROM specialite");
                 $results->setFetchMode(PDO::FETCH_OBJ);
