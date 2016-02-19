@@ -1,3 +1,22 @@
 * {
   box-sizing: border-box;
 }
+
+
+.vignette {
+  background: #2980b9;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.vignette a {
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#searchNav {
+  text-align: center;
+}
