@@ -7,6 +7,33 @@ function init()
   });
 }
 
+function markerMap(spe, city) {
+  jQuery.ajax({
+    method: 'POST',
+    url: "https://maps.googleapis.com/maps/api/geocode/json?address="+city+"+france&key=AIzaSyA4cyJ5SqXWluPoS2To_pAZTW96Ol-KTmo",
+  }).done(function(result) {
+    console.log(result);
+    var map = new google.maps.Map(document.getElementById('map_canvas'), {
+    center: {lat: result.results[0].geometry.location.lat, lng: result.results[0].geometry.location.lng},
+    zoom: 11
+    });
+  jQuery.ajax({
+    method: 'POST',
+    url: "marker_pos.php",
+    data: { spe: spe, city: city }
+    }).done(function(result) {
+    console.log(jQuery.parseJSON(result));
+    var json = jQuery.parseJSON(result);
+    var i = 0;
+    while(i < json.length){
+      var x = parseFloat(json[i].locX); var y = parseFloat(json[i].locY);
+      new google.maps.Marker({position: {lat: x, lng: y}, map: map });
+      i++;
+    }
+    });
+  });
+}
+
 function controlForm() {
 
   var listeSpe = jQuery("#listeSpe");
@@ -24,7 +51,9 @@ function controlForm() {
     displayError("searchNav", msg)
     return false;
   }
-  else { return true }
+  else {
+    return true;
+  }
 }
 
 function disable() {
@@ -52,7 +81,7 @@ function success(pos) {
     method: 'POST',
     url: "https://maps.googleapis.com/maps/api/geocode/json?latlng="+crd.latitude+","+crd.longitude+"&key=AIzaSyA4cyJ5SqXWluPoS2To_pAZTW96Ol-KTmo",
   }).done(function(result) {
-    console.log(result);
+    //console.log(result);
     jQuery("#address").val(result.results[0].address_components[2].long_name);
   });
 
