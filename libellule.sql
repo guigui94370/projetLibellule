@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 12 Février 2016 à 16:38
+-- Généré le :  Lun 22 Février 2016 à 00:08
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -47,10 +47,10 @@ CREATE TABLE IF NOT EXISTS `personne` (
 INSERT INTO `personne` (`id`, `nom`, `prenom`, `idSpe`, `codePostal`, `ville`, `adresse`, `locX`, `locY`) VALUES
 (1, 'Swayze', 'Patrick', 1, '75011', 'Paris', '5 avenue de la République', NULL, NULL),
 (2, 'Dujardin', 'Jean', 2, '75005', 'Paris', '2 rue du Chemin Vert', NULL, NULL),
-(3, 'Bieber', 'Justin', 3, '75001', 'Paris', 'Sous un pont', NULL, NULL),
+(3, 'Bieber', 'Justin', 3, '75011', 'Paris', '7 Rue Alphonse Baudin', 48.8604, 2.37061),
 (4, 'Leforestier', 'Maxime', 4, '75014', 'Paris', '784 avenue des Champs Elysées', NULL, NULL),
-(5, 'Lataupe', 'René', 5, '94200', 'Saint-Maur-des-Fossés', '42 rue de la Paix', NULL, NULL),
-(6, 'Zuckenberg', 'Mark', 3, '75013', 'Paris', '6 rue de Facebook', NULL, NULL);
+(5, 'Lataupe', 'René', 5, '94200', 'Saint-Maur-des-Fossés', '42 rue de la Paix', 48.8029, 2.48543),
+(6, 'Zuckenberg', 'Mark', 3, '75003', 'Paris', '1 Rue Saint-Claude', 48.8601, 2.36717);
 
 -- --------------------------------------------------------
 
